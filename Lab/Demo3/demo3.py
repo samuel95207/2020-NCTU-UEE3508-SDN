@@ -68,8 +68,7 @@ class SimpleMonitor13(simple_switch_13.SimpleSwitch13):
         dpid = format(datapath.id, "d").zfill(16)
         self.mac_to_port.setdefault(dpid, {})
 
-        # self.logger.info("packet in %s %s %s %s", dpid, src, dst, in_port)
-
+        self.logger.info("recv packet %d %s %s %s", datapath.id, src, dst, in_port)
         if( (datapath.id, in_port, src, dst) in self.drop_list):
             self.logger.info("drop packet %d %s %s %s", datapath.id, src, dst, in_port)
             return
@@ -150,9 +149,8 @@ class SimpleMonitor13(simple_switch_13.SimpleSwitch13):
 
             if(stat.packet_count >= self.drop_threshold):
                 self.logger.info(
-                    f"Remove switch={sw_id}  pkg_count={pkg_count}  in_port={in_port}  eth_src={eth_src} eth_dst={eth_dst}")
+                    f"Remove switch={sw_id}  pkc_count={pkc_count}  in_port={in_port}  eth_src={eth_src} eth_dst={eth_dst}")
                 self.drop_list.append((sw_id, in_port, eth_src, eth_dst))
-                print(self.drop_list)
 
                 match = parser.OFPMatch(
                     in_port=in_port, eth_dst=eth_dst, eth_src=eth_src)
