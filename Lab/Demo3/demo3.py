@@ -149,7 +149,7 @@ class SimpleMonitor13(simple_switch_13.SimpleSwitch13):
 
             if(stat.packet_count >= self.drop_threshold):
                 self.logger.info(
-                    f"Remove switch={sw_id}  pkc_count={pkc_count}  in_port={in_port}  eth_src={eth_src} eth_dst={eth_dst}")
+                    f"Remove switch={sw_id}  pkt_count={pkt_count}  in_port={in_port}  eth_src={eth_src} eth_dst={eth_dst}")
                 self.drop_list.append((sw_id, in_port, eth_src, eth_dst))
 
                 match = parser.OFPMatch(
