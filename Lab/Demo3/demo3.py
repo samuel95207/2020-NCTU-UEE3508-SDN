@@ -68,7 +68,7 @@ class SimpleMonitor13(simple_switch_13.SimpleSwitch13):
         dpid = format(datapath.id, "d").zfill(16)
         self.mac_to_port.setdefault(dpid, {})
 
-        self.logger.info("recv packet %d %s %s %s", datapath.id, src, dst, in_port)
+        # self.logger.info("recv packet %d %s %s %s", datapath.id, src, dst, in_port)
         if( (datapath.id, in_port, src, dst) in self.drop_list):
             self.logger.info("drop packet %d %s %s %s", datapath.id, src, dst, in_port)
             return
