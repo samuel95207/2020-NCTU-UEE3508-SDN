@@ -56,9 +56,6 @@ class SimpleMonitor13(simple_switch_13.SimpleSwitch13):
         # req = parser.OFPFlowStatsRequest(datapath)
         # datapath.send_msg(req)
 
-        self._port_sw = None
-        self._port_dict = {}
-
         req = parser.OFPPortStatsRequest(datapath, 0, ofproto.OFPP_ANY)
         datapath.send_msg(req)
 
@@ -82,25 +79,26 @@ class SimpleMonitor13(simple_switch_13.SimpleSwitch13):
     def _port_stats_reply_handler(self, ev):
         body = ev.msg.body
 
-        self._port_sw = ev.msg.datapath.id
+        sw_id = ev.msg.datapath.id
+        port_dict = {}
 
         for stat in sorted(body, key=attrgetter('port_no')):
             if(stat.port_no == 4294967294):
                 continue
-            self._port_dict[stat.port_no] = {'tx_packets':stat.tx_packets,
-                                             'rx_packets':stat.rx_packets}
+            port_dict[stat.port_no] = {'tx_packets':stat.tx_packets,
+                                       'rx_packets':stat.rx_packets}
 
         self.logger.info('--------------------------------')
-        self.logger.info('SW id: %d\n',self._port_sw)
-        for item in self._port_dict.items():
+        self.logger.info('SW id: %d\n',sw_id)
+        for item in port_dict.items():
             self.logger.info('port: %d',item[0])
             self.logger.info('tx_packets: %d',item[1]['tx_packets'])
             self.logger.info('rx_packets: %d',item[1]['rx_packets'])
             self.logger.info(' ')
 
         self.logger.info('Address\t\t\tPort')
-        if(format(self._port_sw, "d").zfill(16) in self.mac_to_port):
-            for item in self.mac_to_port[format(self._port_sw, "d").zfill(16)].items():
+        if(format(sw_id, "d").zfill(16) in self.mac_to_port):
+            for item in self.mac_to_port[format(sw_id, "d").zfill(16)].items():
                 self.logger.info('%17s\t%d',item[0],item[1])
             self.logger.info('--------------------------------\n')
 
