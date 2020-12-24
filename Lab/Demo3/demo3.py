@@ -143,7 +143,7 @@ class SimpleMonitor13(simple_switch_13.SimpleSwitch13):
                            key=lambda flow: (flow.match['in_port'],
                                              flow.match['eth_dst'])):
             sw_id = datapath.id
-            pkg_count = stat.packet_count
+            pkt_count = stat.packet_count
             in_port = stat.match['in_port']
             eth_src = stat.match['eth_src']
             eth_dst = stat.match['eth_dst']
