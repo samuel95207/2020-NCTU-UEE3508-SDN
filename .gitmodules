@@ -1,0 +1,6 @@
+[submodule "ryu"]
+	path = ryu
+	url = ./ryu
+[submodule "mininet"]
+	path = mininet
+	url = ./mininet
